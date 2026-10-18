@@ -1,19 +1,18 @@
-# Online Learning Platform Database (PostgreSQL), 15 Tables
+# Online Learning Platform Database (PostgreSQL), 18 Tables
 
-A simplified relational database design for an online learning platform similar to Udemy or Coursera. This document describes all 15 entities, their purpose, attributes, data types, keys, and constraints.
+A simplified relational database design for an online learning platform similar to Udemy or Coursera. This document describes all 18 entities, their purpose, attributes, data types, keys, and constraints.
 
 ---
 
 ## Table of Contents
 
 1. [Legend](#legend)
-2. [Removed Tables and Cleaned-up Attributes](#removed-tables-and-cleaned-up-attributes)
-3. [Core](#core): Users, Instructors, Categories, Courses, Sections, Lessons
-4. [Learning Activity](#learning-activity): Enrollments, Lesson_Progress, Assignments, Submissions, Certificates
-5. [Commerce](#commerce): Orders, Order_Items, Payments
-6. [Engagement](#engagement): Reviews
-7. [Relationship Summary](#relationship-summary)
-8. [Suggested Creation Order](#suggested-creation-order)
+2. [Core](#core): Users, Instructors, Instructor_Expertise, Categories, Courses, Course_Languages, Sections, Lessons
+3. [Learning Activity](#learning-activity): Enrollments, Lesson_Progress, Assignments, Submissions, Submission_Files, Certificates
+4. [Commerce](#commerce): Orders, Order_Items, Payments
+5. [Engagement](#engagement): Reviews
+6. [Relationship Summary](#relationship-summary)
+7. [Suggested Creation Order](#suggested-creation-order)
 
 ---
 
@@ -30,32 +29,7 @@ A simplified relational database design for an online learning platform similar 
 
 Data types are PostgreSQL types. `SERIAL` is an auto-incrementing integer.
 
----
-
-## Removed Tables and Cleaned-up Attributes
-
-**9 tables removed (24 to 15):**
-
-| Removed table | Reason |
-|---------------|--------|
-| Quizzes | Assignments already cover assessment; quiz module is optional |
-| Questions | Only existed to support Quizzes |
-| Options | Only existed to support Questions |
-| Quiz_Attempts | Only existed to support Quizzes |
-| Coupons | Discounts are an optional commerce feature |
-| Cart | Temporary checkout list; not essential to the core flow |
-| Wishlist | Convenience feature, not essential |
-| Discussions | Community feature, not essential |
-| Notifications | Supporting feature, not essential |
-
-**Relational attributes removed from the remaining tables:**
-
-| Table | Removed attribute | Because |
-|-------|-------------------|---------|
-| Orders | `coupon_id` (FK to Coupons) | Coupons removed |
-| Orders | `discount_amount` | Only existed to record coupon discounts |
-
-All other tables had no foreign keys pointing to the removed tables. Only their **Relationships** notes were updated.
+**Participation:** *Total* means every row must take part in the relationship (the foreign key is NOT NULL). *Partial* means a row may exist without taking part.
 
 ---
 
@@ -68,7 +42,8 @@ All other tables had no foreign keys pointing to the removed tables. Only their 
 | Attribute | Data Type | Key | Constraints | Description |
 |-----------|-----------|-----|-------------|-------------|
 | user_id | SERIAL | PK | NN | Unique identifier of the user |
-| full_name | VARCHAR(100) | | NN | Full name of the user |
+| first_name | VARCHAR(100) | | NN | First name of the user |
+| last_name | VARCHAR(100) | | NN | Last name of the user |
 | email | VARCHAR(150) | UQ | NN | Login email, must be unique |
 | password_hash | VARCHAR(255) | | NN | Hashed password (never store plain text) |
 | role | VARCHAR(20) | | NN, CK (`student`, `instructor`, `admin`), DEF `student` | Role of the user |
@@ -78,8 +53,14 @@ All other tables had no foreign keys pointing to the removed tables. Only their 
 | created_at | TIMESTAMP | | NN, DEF `CURRENT_TIMESTAMP` | Registration time |
 
 **Relationships:**
-- 1:1 with Instructors (only for users who teach)
-- 1:N with Enrollments, Orders, Reviews, Submissions
+
+| Related table | Relationship | Cardinality | Users participation | Other table participation |
+|---|---|---|---|---|
+| Instructors | is a / extended by | 1:1 | Partial (only teachers) | Total |
+| Enrollments | enrolls | 1:N | Partial | Total |
+| Orders | places | 1:N | Partial | Total |
+| Reviews | writes | 1:N | Partial | Total |
+| Submissions | submits | 1:N | Partial | Total |
 
 ---
 
@@ -92,18 +73,41 @@ All other tables had no foreign keys pointing to the removed tables. Only their 
 | instructor_id | SERIAL | PK | NN | Unique identifier of the instructor |
 | user_id | INT | FK, UQ | NN, references `Users(user_id)` ON DELETE CASCADE | Links to the user account (1:1) |
 | bio | TEXT | | | Instructor biography |
-| expertise | VARCHAR(150) | | | Main area of expertise |
 | years_of_experience | INT | | CK (>= 0) | Teaching or industry experience |
 | total_earnings | NUMERIC(12,2) | | DEF 0, CK (>= 0) | Total revenue earned |
 | rating | NUMERIC(2,1) | | CK (0 to 5) | Average rating across courses |
 
 **Relationships:**
-- 1:1 with Users
-- 1:N with Courses
+
+| Related table | Relationship | Cardinality | Instructors participation | Other table participation |
+|---|---|---|---|---|
+| Users | is a | 1:1 | Total | Partial |
+| Courses | creates | 1:N | Partial (may have no courses yet) | Total |
+| Instructor_Expertise | has | 1:N | Partial | Total |
 
 ---
 
-## 3. Categories
+## 3. Instructor_Expertise
+
+**Purpose:** Stores each area of expertise of an instructor as its own row, because one instructor can have several (a multivalued attribute of Instructors).
+
+| Attribute | Data Type | Key | Constraints | Description |
+|-----------|-----------|-----|-------------|-------------|
+| expertise_id | SERIAL | PK | NN | Unique identifier of the expertise record |
+| instructor_id | INT | FK | NN, references `Instructors(instructor_id)` ON DELETE CASCADE | Instructor who has this expertise |
+| expertise | VARCHAR(100) | | NN | Area of expertise |
+
+**Additional constraint:** UQ (`instructor_id`, `expertise`) so the same expertise is not listed twice for one instructor.
+
+**Relationships:**
+
+| Related table | Relationship | Cardinality | Instructor_Expertise participation | Other table participation |
+|---|---|---|---|---|
+| Instructors | belongs to | N:1 | Total | Partial |
+
+---
+
+## 4. Categories
 
 **Purpose:** Organizes courses into subject areas such as Programming, Design, or Business. Supports subcategories through a self-reference.
 
@@ -115,12 +119,15 @@ All other tables had no foreign keys pointing to the removed tables. Only their 
 | parent_category_id | INT | FK | References `Categories(category_id)` ON DELETE SET NULL | Parent category (NULL for top-level) |
 
 **Relationships:**
-- Self-referencing (parent to child categories)
-- 1:N with Courses
+
+| Related table | Relationship | Cardinality | Categories participation | Other table participation |
+|---|---|---|---|---|
+| Courses | classifies | 1:N | Partial | Total |
+| Categories (self) | parent of | 1:N (recursive) | Partial (a leaf has no child) | Partial (a top-level category has no parent) |
 
 ---
 
-## 4. Courses
+## 5. Courses
 
 **Purpose:** The main product of the platform. Each course is created by one instructor and belongs to one category.
 
@@ -133,20 +140,47 @@ All other tables had no foreign keys pointing to the removed tables. Only their 
 | description | TEXT | | | Detailed course description |
 | price | NUMERIC(10,2) | | NN, CK (>= 0), DEF 0 | Course price (0 means free) |
 | level | VARCHAR(20) | | CK (`beginner`, `intermediate`, `advanced`) | Difficulty level |
-| language | VARCHAR(40) | | DEF `English` | Language of instruction |
 | duration_hours | NUMERIC(5,1) | | CK (>= 0) | Total course length in hours |
 | thumbnail_url | VARCHAR(255) | | | Course image URL |
 | status | VARCHAR(20) | | NN, CK (`draft`, `published`, `archived`), DEF `draft` | Publication status |
 | created_at | TIMESTAMP | | NN, DEF `CURRENT_TIMESTAMP` | Creation time |
 
 **Relationships:**
-- N:1 with Instructors and Categories
-- 1:N with Sections, Assignments, Reviews
-- M:N with Users via Enrollments, and with Orders via Order_Items
+
+| Related table | Relationship | Cardinality | Courses participation | Other table participation |
+|---|---|---|---|---|
+| Instructors | created by | N:1 | Total | Partial |
+| Categories | belongs to | N:1 | Total | Partial |
+| Course_Languages | offered in | 1:N | Partial | Total |
+| Sections | contains | 1:N | Partial (a draft may be empty) | Total |
+| Assignments | has | 1:N | Partial | Total |
+| Reviews | reviewed by | 1:N | Partial | Total |
+| Users (via Enrollments) | enrolled in | M:N | Partial | Partial |
+| Orders (via Order_Items) | sold in | M:N | Partial | Partial |
 
 ---
 
-## 5. Sections
+## 6. Course_Languages
+
+**Purpose:** Stores each language in which a course is offered as its own row, because one course can support several languages (a multivalued attribute of Courses).
+
+| Attribute | Data Type | Key | Constraints | Description |
+|-----------|-----------|-----|-------------|-------------|
+| course_language_id | SERIAL | PK | NN | Unique identifier of the course language record |
+| course_id | INT | FK | NN, references `Courses(course_id)` ON DELETE CASCADE | Course offered in this language |
+| language | VARCHAR(50) | | NN | Language of instruction |
+
+**Additional constraint:** UQ (`course_id`, `language`) so a language is not listed twice for one course.
+
+**Relationships:**
+
+| Related table | Relationship | Cardinality | Course_Languages participation | Other table participation |
+|---|---|---|---|---|
+| Courses | language of | N:1 | Total | Partial |
+
+---
+
+## 7. Sections
 
 **Purpose:** Groups lessons into logical chapters or modules inside a course.
 
@@ -160,12 +194,15 @@ All other tables had no foreign keys pointing to the removed tables. Only their 
 **Additional constraint:** UQ (`course_id`, `section_order`) so two sections cannot share the same position in a course.
 
 **Relationships:**
-- N:1 with Courses
-- 1:N with Lessons
+
+| Related table | Relationship | Cardinality | Sections participation | Other table participation |
+|---|---|---|---|---|
+| Courses | part of (identifying) | N:1 | Total | Partial |
+| Lessons | contains | 1:N | Partial | Total |
 
 ---
 
-## 6. Lessons
+## 8. Lessons
 
 **Purpose:** The individual units of learning content, such as a video, article, or PDF.
 
@@ -183,14 +220,17 @@ All other tables had no foreign keys pointing to the removed tables. Only their 
 **Additional constraint:** UQ (`section_id`, `lesson_order`).
 
 **Relationships:**
-- N:1 with Sections
-- 1:N with Lesson_Progress
+
+| Related table | Relationship | Cardinality | Lessons participation | Other table participation |
+|---|---|---|---|---|
+| Sections | part of (identifying) | N:1 | Total | Partial |
+| Lesson_Progress | tracked by | 1:N | Partial | Total |
 
 ---
 
 # Learning Activity
 
-## 7. Enrollments
+## 9. Enrollments
 
 **Purpose:** Records that a student has joined a course. It resolves the many-to-many relationship between Users and Courses.
 
@@ -206,13 +246,17 @@ All other tables had no foreign keys pointing to the removed tables. Only their 
 **Additional constraint:** UQ (`user_id`, `course_id`) so a student cannot enroll twice in the same course.
 
 **Relationships:**
-- N:1 with Users and Courses
-- 1:N with Lesson_Progress
-- 1:1 with Certificates
+
+| Related table | Relationship | Cardinality | Enrollments participation | Other table participation |
+|---|---|---|---|---|
+| Users | made by | N:1 | Total | Partial |
+| Courses | for | N:1 | Total | Partial |
+| Lesson_Progress | records | 1:N | Partial | Total |
+| Certificates | earns | 1:1 | Partial (only completed enrollments) | Total |
 
 ---
 
-## 8. Lesson_Progress
+## 10. Lesson_Progress
 
 **Purpose:** Tracks which lessons a student has completed. Overall course progress is calculated from this table.
 
@@ -228,11 +272,15 @@ All other tables had no foreign keys pointing to the removed tables. Only their 
 **Additional constraint:** UQ (`enrollment_id`, `lesson_id`).
 
 **Relationships:**
-- N:1 with Enrollments and Lessons (junction table)
+
+| Related table | Relationship | Cardinality | Lesson_Progress participation | Other table participation |
+|---|---|---|---|---|
+| Enrollments | belongs to | N:1 | Total | Partial |
+| Lessons | tracks | N:1 | Total | Partial |
 
 ---
 
-## 9. Assignments
+## 11. Assignments
 
 **Purpose:** Practical tasks created by an instructor for a course.
 
@@ -246,12 +294,15 @@ All other tables had no foreign keys pointing to the removed tables. Only their 
 | max_marks | INT | | NN, CK (> 0) | Maximum marks |
 
 **Relationships:**
-- N:1 with Courses
-- 1:N with Submissions
+
+| Related table | Relationship | Cardinality | Assignments participation | Other table participation |
+|---|---|---|---|---|
+| Courses | belongs to | N:1 | Total | Partial |
+| Submissions | receives | 1:N | Partial | Total |
 
 ---
 
-## 10. Submissions
+## 12. Submissions
 
 **Purpose:** A student's response to an assignment, along with grading and feedback.
 
@@ -260,7 +311,6 @@ All other tables had no foreign keys pointing to the removed tables. Only their 
 | submission_id | SERIAL | PK | NN | Unique identifier of the submission |
 | assignment_id | INT | FK | NN, references `Assignments(assignment_id)` ON DELETE CASCADE | Assignment answered |
 | user_id | INT | FK | NN, references `Users(user_id)` ON DELETE CASCADE | Student who submitted |
-| file_url | VARCHAR(255) | | NN | Link to the submitted file |
 | submitted_at | TIMESTAMP | | NN, DEF `CURRENT_TIMESTAMP` | Submission time |
 | marks_obtained | NUMERIC(5,2) | | CK (>= 0) | Marks awarded (NULL until graded) |
 | feedback | TEXT | | | Instructor feedback |
@@ -268,11 +318,34 @@ All other tables had no foreign keys pointing to the removed tables. Only their 
 **Additional constraint:** UQ (`assignment_id`, `user_id`) if only one submission per student is allowed.
 
 **Relationships:**
-- N:1 with Assignments and Users
+
+| Related table | Relationship | Cardinality | Submissions participation | Other table participation |
+|---|---|---|---|---|
+| Assignments | answers | N:1 | Total | Partial |
+| Users | submitted by | N:1 | Total | Partial |
+| Submission_Files | contains | 1:N | Partial in the schema (total by business rule) | Total |
 
 ---
 
-## 11. Certificates
+## 13. Submission_Files
+
+**Purpose:** Stores each file of a submission as its own row, because one submission can contain several files (a multivalued attribute of Submissions).
+
+| Attribute | Data Type | Key | Constraints | Description |
+|-----------|-----------|-----|-------------|-------------|
+| file_id | SERIAL | PK | NN | Unique identifier of the file record |
+| submission_id | INT | FK | NN, references `Submissions(submission_id)` ON DELETE CASCADE | Submission the file belongs to |
+| file_url | VARCHAR(255) | | NN | Link to the submitted file |
+
+**Relationships:**
+
+| Related table | Relationship | Cardinality | Submission_Files participation | Other table participation |
+|---|---|---|---|---|
+| Submissions | belongs to | N:1 | Total | Partial |
+
+---
+
+## 14. Certificates
 
 **Purpose:** Issued when a student completes a course.
 
@@ -284,13 +357,16 @@ All other tables had no foreign keys pointing to the removed tables. Only their 
 | issued_at | TIMESTAMP | | NN, DEF `CURRENT_TIMESTAMP` | Issue time |
 
 **Relationships:**
-- 1:1 with Enrollments
+
+| Related table | Relationship | Cardinality | Certificates participation | Other table participation |
+|---|---|---|---|---|
+| Enrollments | issued for (identifying) | 1:1 | Total | Partial |
 
 ---
 
 # Commerce
 
-## 12. Orders
+## 15. Orders
 
 **Purpose:** A single checkout made by a user. It may include multiple courses.
 
@@ -303,12 +379,16 @@ All other tables had no foreign keys pointing to the removed tables. Only their 
 | ordered_at | TIMESTAMP | | NN, DEF `CURRENT_TIMESTAMP` | Order time |
 
 **Relationships:**
-- N:1 with Users
-- 1:N with Order_Items and Payments
+
+| Related table | Relationship | Cardinality | Orders participation | Other table participation |
+|---|---|---|---|---|
+| Users | placed by | N:1 | Total | Partial |
+| Order_Items | includes | 1:N | Partial in the schema (total by business rule) | Total |
+| Payments | paid through | 1:N | Partial (a pending order may have no payment yet) | Total |
 
 ---
 
-## 13. Order_Items
+## 16. Order_Items
 
 **Purpose:** The individual courses inside an order. It resolves the many-to-many relationship between Orders and Courses.
 
@@ -324,11 +404,15 @@ All other tables had no foreign keys pointing to the removed tables. Only their 
 **Note:** `price_at_purchase` preserves the price even if the course price changes later.
 
 **Relationships:**
-- N:1 with Orders and Courses (junction table)
+
+| Related table | Relationship | Cardinality | Order_Items participation | Other table participation |
+|---|---|---|---|---|
+| Orders | part of | N:1 | Total | Partial |
+| Courses | refers to | N:1 | Total | Partial |
 
 ---
 
-## 14. Payments
+## 17. Payments
 
 **Purpose:** Records the financial transaction for an order. An order can have multiple payment attempts.
 
@@ -343,13 +427,16 @@ All other tables had no foreign keys pointing to the removed tables. Only their 
 | paid_at | TIMESTAMP | | | Time payment completed |
 
 **Relationships:**
-- N:1 with Orders
+
+| Related table | Relationship | Cardinality | Payments participation | Other table participation |
+|---|---|---|---|---|
+| Orders | settles | N:1 | Total | Partial |
 
 ---
 
 # Engagement
 
-## 15. Reviews
+## 18. Reviews
 
 **Purpose:** Ratings and written feedback left by students on courses.
 
@@ -365,7 +452,11 @@ All other tables had no foreign keys pointing to the removed tables. Only their 
 **Additional constraint:** UQ (`user_id`, `course_id`) so a student reviews a course only once. Ideally only enrolled students can review.
 
 **Relationships:**
-- N:1 with Users and Courses
+
+| Related table | Relationship | Cardinality | Reviews participation | Other table participation |
+|---|---|---|---|---|
+| Users | written by | N:1 | Total | Partial |
+| Courses | about | N:1 | Total | Partial |
 
 ---
 
@@ -374,7 +465,7 @@ All other tables had no foreign keys pointing to the removed tables. Only their 
 | Type | Relationships |
 |------|---------------|
 | **One-to-One** | Users to Instructors; Enrollments to Certificates |
-| **One-to-Many** | Instructors to Courses; Categories to Courses; Courses to Sections; Sections to Lessons; Courses to Assignments; Assignments to Submissions; Users to Orders; Orders to Payments |
+| **One-to-Many** | Instructors to Courses; Categories to Courses; Courses to Sections; Sections to Lessons; Courses to Assignments; Assignments to Submissions; Users to Orders; Orders to Payments; Instructors to Instructor_Expertise; Courses to Course_Languages; Submissions to Submission_Files |
 | **Many-to-Many (junction table)** | Users and Courses via **Enrollments**; Orders and Courses via **Order_Items**; Enrollments and Lessons via **Lesson_Progress**; Users and Courses via **Reviews** |
 | **Self-Referencing** | Categories (parent and child) |
 
@@ -386,19 +477,22 @@ Create tables in this order so that foreign keys always reference tables that al
 
 1. Users
 2. Instructors
-3. Categories
-4. Courses
-5. Sections
-6. Lessons
-7. Orders
-8. Order_Items
-9. Payments
-10. Enrollments
-11. Lesson_Progress
-12. Assignments
-13. Submissions
-14. Certificates
-15. Reviews
+3. Instructor_Expertise
+4. Categories
+5. Courses
+6. Course_Languages
+7. Sections
+8. Lessons
+9. Orders
+10. Order_Items
+11. Payments
+12. Enrollments
+13. Lesson_Progress
+14. Assignments
+15. Submissions
+16. Submission_Files
+17. Certificates
+18. Reviews
 
 ---
 
