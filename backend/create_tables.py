@@ -169,12 +169,53 @@ CREATE TABLE IF NOT EXISTS reviews (
 );
 """
 
+# Constraints that are added to existing databases too (idempotent).
+CONSTRAINTS = """
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'courses_level_check') THEN
+        ALTER TABLE courses ADD CONSTRAINT courses_level_check
+            CHECK (level IS NULL OR level IN ('beginner','intermediate','advanced'));
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'sections_order_check') THEN
+        ALTER TABLE sections ADD CONSTRAINT sections_order_check CHECK (section_order > 0);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'lessons_order_check') THEN
+        ALTER TABLE lessons ADD CONSTRAINT lessons_order_check CHECK (lesson_order > 0);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'lessons_content_type_check') THEN
+        ALTER TABLE lessons ADD CONSTRAINT lessons_content_type_check
+            CHECK (content_type IN ('video','article','pdf'));
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'enrollments_status_check') THEN
+        ALTER TABLE enrollments ADD CONSTRAINT enrollments_status_check
+            CHECK (status IN ('active','completed','dropped'));
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'orders_status_check') THEN
+        ALTER TABLE orders ADD CONSTRAINT orders_status_check
+            CHECK (order_status IN ('pending','completed','cancelled'));
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'payments_method_check') THEN
+        ALTER TABLE payments ADD CONSTRAINT payments_method_check
+            CHECK (payment_method IN ('card','upi','net_banking','wallet'));
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'payments_status_check') THEN
+        ALTER TABLE payments ADD CONSTRAINT payments_status_check
+            CHECK (payment_status IN ('pending','success','failed','refunded'));
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'assignments_marks_check') THEN
+        ALTER TABLE assignments ADD CONSTRAINT assignments_marks_check CHECK (max_marks > 0);
+    END IF;
+END $$;
+"""
+
 if __name__ == "__main__":
     conn = get_connection()
     try:
         with conn:
             with conn.cursor() as cur:
                 cur.execute(SCHEMA)
-        print("All 18 tables created")
+                cur.execute(CONSTRAINTS)
+        print("All 18 tables and constraints are in place")
     finally:
         conn.close()

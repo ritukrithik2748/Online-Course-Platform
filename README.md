@@ -1,4 +1,125 @@
-# Online Learning Platform Database (PostgreSQL), 18 Tables
+# CourseHub — Online Learning Platform
+
+A Udemy/Coursera-style course platform: FastAPI backend, an API gateway in front of it, and a React frontend styled with an Instagram-inspired look.
+
+```
+frontend (Vite + React)  →  gateway (FastAPI :8000)  →  backend API (FastAPI :8001)  →  PostgreSQL :5433
+```
+
+## Project structure
+
+| Folder      | What it is | Runs on |
+|-------------|-----------|---------|
+| `backend/`  | Main FastAPI service: auth (JWT), courses, enrollments, progress, reviews, instructor management. Owns the database and all business rules. | `127.0.0.1:8001` |
+| `gateway/`  | Thin API gateway: single entry point for the frontend. Forwards `/api/*` to the backend, adds rate limiting and request IDs, normalizes CORS and error responses. | `127.0.0.1:8000` |
+| `frontend/` | Vite + React + Tailwind SPA: landing, catalog, course detail, player, dashboard, instructor dashboard, profile. Talks only to the gateway. | `127.0.0.1:5173` |
+
+Everything below "Database Design Documentation" describes the 18-table PostgreSQL schema.
+
+## Prerequisites
+
+- Node.js 18+ and npm
+- Python 3.11+
+- PostgreSQL running on **localhost:5433** (the port is configurable in `backend/.env`)
+
+## 1. Database
+
+```bash
+cd backend
+python -m venv venv
+# Windows:
+./venv/Scripts/python.exe -m pip install -r requirements.txt
+# create the database (uses DB_* values from backend/.env):
+./venv/Scripts/python.exe create_database.py
+./venv/Scripts/python.exe create_tables.py   # creates all 18 tables
+./venv/Scripts/python.exe seed.py            # demo users, categories, courses, reviews
+```
+
+`create_tables.py` prints the logins it seeds:
+
+- Student: `sam@coursehub.dev` / `Password123`
+- Instructors: `maya@coursehub.dev`, `andre@coursehub.dev` / `Password123`
+
+## 2. Backend (FastAPI, port 8001)
+
+```bash
+cd backend
+cp .env.example .env    # then edit DB_PASSWORD, SECRET_KEY
+./venv/Scripts/python.exe -m uvicorn main:app --host 127.0.0.1 --port 8001
+```
+
+`.env` values (see `backend/.env.example`):
+
+| Variable | Purpose |
+|----------|---------|
+| `DB_HOST` / `DB_PORT` / `DB_USER` / `DB_PASSWORD` / `DB_NAME` | PostgreSQL connection |
+| `SECRET_KEY` | Signs JWTs — set a long random value in production |
+
+Interactive docs: `http://127.0.0.1:8001/docs`.
+
+## 3. Gateway (FastAPI, port 8000)
+
+```bash
+cd gateway
+cp .env.example .env    # BACKEND_URL points at the backend
+../backend/venv/Scripts/python.exe -m uvicorn main:app --host 127.0.0.1 --port 8000
+```
+
+`.env` values (see `gateway/.env.example`):
+
+| Variable | Purpose |
+|----------|---------|
+| `BACKEND_URL` | Base URL of the backend service (default `http://127.0.0.1:8001`) |
+| `ALLOWED_ORIGINS` | Origins allowed by CORS (default includes the Vite dev server `http://localhost:5173`) |
+| `RATE_LIMIT_*` | Optional request throttling per client · enabled in prod, log-only in dev |
+
+The gateway forwards every `/api/*` route to the backend and passes the `Authorization` header through; JWTs are issued by the backend and verified there.
+
+Skip the gateway for development if you like — the frontend also supports talking to the backend directly.
+
+## 4. Frontend (Vite + React, port 5173)
+
+```bash
+cd frontend
+npm install
+cp .env.example .env   # or edit the existing .env
+npm run dev            # opens on http://localhost:5173
+```
+
+`.env` values (see `frontend/.env.example`):
+
+| Variable | Purpose |
+|----------|---------|
+| `VITE_API_URL` | Base URL of the **gateway** (default `http://localhost:8000`). Point it at `http://localhost:8001` to bypass the gateway. |
+
+Production build:
+
+```bash
+npm run build   # outputs to frontend/dist/ — no warnings
+npm run preview # serve the build locally
+```
+
+## Full-stack quick start (Windows PowerShell / bash)
+
+From the repo root, three terminals:
+
+```bash
+cd backend  && ./venv/Scripts/python.exe -m uvicorn main:app --host 127.0.0.1 --port 8001
+cd gateway  && ../backend/venv/Scripts/python.exe -m uvicorn main:app --host 127.0.0.1 --port 8000
+cd frontend && npm run dev
+```
+
+Then open `http://localhost:5173` and sign in with `sam@coursehub.dev` / `Password123`.
+
+## Where the demo data comes from
+
+`backend/seed.py` creates three instructors, six categories, ten courses with sections/lessons (video URLs point at public sample MP4s to avoid external video hosting), demo enrollments and progress, and one course with a few reviews. Delete rows or re-run `seed.py` after resetting tables to restore a clean state.
+
+---
+
+# Database Design Documentation
+
+## Online Learning Platform Database (PostgreSQL), 18 Tables
 
 A simplified relational database design for an online learning platform similar to Udemy or Coursera. This document describes all 18 entities, their purpose, attributes, data types, keys, and constraints.
 
@@ -6,13 +127,21 @@ A simplified relational database design for an online learning platform similar 
 
 ## Table of Contents
 
-1. [Legend](#legend)
-2. [Core](#core): Users, Instructors, Instructor_Expertise, Categories, Courses, Course_Languages, Sections, Lessons
-3. [Learning Activity](#learning-activity): Enrollments, Lesson_Progress, Assignments, Submissions, Submission_Files, Certificates
-4. [Commerce](#commerce): Orders, Order_Items, Payments
-5. [Engagement](#engagement): Reviews
-6. [Relationship Summary](#relationship-summary)
-7. [Suggested Creation Order](#suggested-creation-order)
+1. [Project structure](#project-structure)
+2. [Prerequisites](#prerequisites)
+3. [Database](#1-database)
+4. [Backend (FastAPI, port 8001)](#2-backend-fastapi-port-8001)
+5. [Gateway (FastAPI, port 8000)](#3-gateway-fastapi-port-8000)
+6. [Frontend (Vite + React, port 5173)](#4-frontend-vite--react-port-5173)
+7. [Full-stack quick start](#full-stack-quick-start-windows-powershell--bash)
+8. [Where the demo data comes from](#where-the-demo-data-comes-from)
+9. [Legend](#legend)
+10. [Core](#core): Users, Instructors, Instructor_Expertise, Categories, Courses, Course_Languages, Sections, Lessons
+11. [Learning Activity](#learning-activity): Enrollments, Lesson_Progress, Assignments, Submissions, Submission_Files, Certificates
+12. [Commerce](#commerce): Orders, Order_Items, Payments
+13. [Engagement](#engagement): Reviews
+14. [Relationship Summary](#relationship-summary)
+15. [Suggested Creation Order](#suggested-creation-order)
 
 ---
 
