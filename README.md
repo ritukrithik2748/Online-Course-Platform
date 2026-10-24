@@ -1,6 +1,6 @@
-# CourseHub — Online Learning Platform
+# LearNova — Online Learning Platform
 
-A Udemy/Coursera-style course platform: FastAPI backend, an API gateway in front of it, and a React frontend styled with an Instagram-inspired look.
+A Udemy/Coursera-style course platform: FastAPI backend, an API gateway in front of it, and a React frontend styled with an Instagram-inspired look. Features include Google Sign-In, profile photo uploads, course filtering, enrollment tracking, and an expanded course catalog.
 
 ```
 frontend (Vite + React)  →  gateway (FastAPI :8000)  →  backend API (FastAPI :8001)  →  PostgreSQL :5433
@@ -40,6 +40,13 @@ python -m venv venv
 - Student: `sam@coursehub.dev` / `Password123`
 - Instructors: `maya@coursehub.dev`, `andre@coursehub.dev` / `Password123`
 
+To expand the catalog with additional courses and varied videos, run:
+
+```bash
+./venv/Scripts/python.exe seed_catalog.py      # add ~250 courses
+./venv/Scripts/python.exe seed_more_courses.py # add another ~250 courses
+```
+
 ## 2. Backend (FastAPI, port 8001)
 
 ```bash
@@ -54,6 +61,7 @@ cp .env.example .env    # then edit DB_PASSWORD, SECRET_KEY
 |----------|---------|
 | `DB_HOST` / `DB_PORT` / `DB_USER` / `DB_PASSWORD` / `DB_NAME` | PostgreSQL connection |
 | `SECRET_KEY` | Signs JWTs — set a long random value in production |
+| `GOOGLE_CLIENT_ID` | Google OAuth 2.0 Web Client ID for Google Sign-In (optional) |
 
 Interactive docs: `http://127.0.0.1:8001/docs`.
 
@@ -91,6 +99,7 @@ npm run dev            # opens on http://localhost:5173
 | Variable | Purpose |
 |----------|---------|
 | `VITE_API_URL` | Base URL of the **gateway** (default `http://localhost:8000`). Point it at `http://localhost:8001` to bypass the gateway. |
+| `VITE_GOOGLE_CLIENT_ID` | Google OAuth 2.0 Web Client ID for Google Sign-In (optional) |
 
 Production build:
 
