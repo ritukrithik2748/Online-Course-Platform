@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   ChevronDown,
-  GraduationCap,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -54,9 +53,13 @@ export default function Navbar() {
     <header className="bg-zinc-950 sticky top-0 z-40" style={{ boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)' }}>
       <nav className="container-page flex h-16 items-center justify-between gap-3 px-4">
         <Link to="/" className="flex shrink-0 items-center gap-2.5" aria-label="LearNova home">
-          <span className="ig-gradient flex size-9 items-center justify-center rounded-xl shadow-glow">
-            <GraduationCap className="size-5 text-white" />
-          </span>
+          <img
+            src="/logo.png"
+            alt=""
+            width={36}
+            height={36}
+            className="size-9 shrink-0"
+          />
           <span className="text-lg font-extrabold tracking-tight text-white">
             Lear<span className="gradient-text">Nova</span>
           </span>
@@ -169,7 +172,7 @@ export default function Navbar() {
             </div>
           ) : (
             <div className="hidden items-center gap-2 sm:flex">
-              <Link to="/login" className="btn border border-white/20 bg-white/10 text-white hover:bg-white/20">
+              <Link to="/login" className="btn border border-white/40 bg-black/80 text-white hover:bg-black/70 shadow-[0_4px_20px_-8px_rgb(0_0_0_0.6)]">
                 Log in
               </Link>
               <Link to="/signup" className="btn btn-primary">
@@ -210,7 +213,7 @@ export default function Navbar() {
           </div>
           {!isAuthenticated && (
             <div className="mt-4 grid grid-cols-2 gap-2">
-              <Link to="/login" className="btn border border-white/20 bg-white/10 text-white hover:bg-white/20">
+              <Link to="/login" className="btn border border-white/40 bg-black/80 text-white hover:bg-black/70 shadow-[0_4px_20px_-8px_rgb(0_0_0_0.6)]">
                 Log in
               </Link>
               <Link to="/signup" className="btn btn-primary">

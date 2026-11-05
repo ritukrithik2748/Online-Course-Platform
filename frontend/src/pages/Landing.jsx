@@ -70,6 +70,8 @@ export default function Landing() {
             >
               <Search className="ml-3 size-5 shrink-0 text-zinc-400" />
               <input
+                id="heroSearch"
+                name="search"
                 type="search"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}

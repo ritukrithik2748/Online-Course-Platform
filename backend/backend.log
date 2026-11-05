@@ -1,6 +1,37 @@
-INFO:     Started server process [18252]
+INFO:     Started server process [2756]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-ERROR:    [Errno 10048] error while attempting to bind on address ('127.0.0.1', 8001): [winerror 10048] only one usage of each socket address (protocol/network address/port) is normally permitted
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
+INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
+INFO:     127.0.0.1:12786 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:12789 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52443 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52445 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65436 - "GET /api/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65436 - "GET /api/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65435 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65444 - "GET /api/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65436 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33943 - "GET /api/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33947 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61485 - "GET /api/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61485 - "GET /api/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61486 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61485 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3473 - "GET /api/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3474 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3473 - "GET /api/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:16837 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:28406 - "GET /api/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:28406 - "GET /api/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:28405 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:28406 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64691 - "GET /api/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64691 - "GET /api/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64690 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64691 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:24817 - "GET /api/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:24819 - "GET /api/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:24821 - "GET /api/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:24817 - "GET /api/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:24818 - "GET /api/courses?sort=popular&page_size=6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:24820 - "GET /api/courses?sort=popular&page_size=6 HTTP/1.1" 200 OK

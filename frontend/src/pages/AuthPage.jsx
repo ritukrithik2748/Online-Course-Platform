@@ -6,7 +6,6 @@ import {
   CheckCircle2,
   Eye,
   EyeOff,
-  GraduationCap,
   Loader2,
   LockKeyhole,
   Mail,
@@ -220,8 +219,8 @@ export default function AuthPage({ mode = "login" }) {
           <div className="absolute -bottom-16 -left-10 size-64 rounded-full bg-white/10" />
 
           <div className="relative flex items-center gap-2.5">
-            <span className="flex size-10 items-center justify-center rounded-xl bg-white/20 backdrop-blur">
-              <GraduationCap className="size-6" />
+            <span className="flex size-10 items-center justify-center rounded-xl bg-white/20 p-1 backdrop-blur">
+              <img src="/logo.png" alt="" width={32} height={32} className="size-8" />
             </span>
             <span className="text-lg font-extrabold">LearNova</span>
           </div>
@@ -346,6 +345,7 @@ export default function AuthPage({ mode = "login" }) {
                   <Field label="First name" htmlFor="firstName" error={errors.firstName}>
                     <input
                       id="firstName"
+                      name="firstName"
                       className={`input ${errors.firstName ? "input-error" : ""}`}
                       value={values.firstName}
                       onChange={(event) => updateValue("firstName", event.target.value)}
@@ -356,6 +356,7 @@ export default function AuthPage({ mode = "login" }) {
                   <Field label="Last name" htmlFor="lastName" error={errors.lastName}>
                     <input
                       id="lastName"
+                      name="lastName"
                       className={`input ${errors.lastName ? "input-error" : ""}`}
                       value={values.lastName}
                       onChange={(event) => updateValue("lastName", event.target.value)}
@@ -405,6 +406,7 @@ export default function AuthPage({ mode = "login" }) {
                 <Mail className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-zinc-400" />
                 <input
                   id="email"
+                  name="email"
                   type="email"
                   className={`input pl-11 ${errors.email ? "input-error" : ""}`}
                   value={values.email}
@@ -426,6 +428,7 @@ export default function AuthPage({ mode = "login" }) {
                 <LockKeyhole className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-zinc-400" />
                 <input
                   id="password"
+                  name="password"
                   type={showPassword ? "text" : "password"}
                   className={`input px-11 ${errors.password ? "input-error" : ""}`}
                   value={values.password}
@@ -462,6 +465,7 @@ export default function AuthPage({ mode = "login" }) {
                   <LockKeyhole className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-zinc-400" />
                   <input
                     id="confirmPassword"
+                    name="confirmPassword"
                     type={showPassword ? "text" : "password"}
                     className={`input pl-11 ${errors.confirmPassword ? "input-error" : values.confirmPassword && values.password && values.confirmPassword === values.password ? "border-emerald-400 focus:border-emerald-400 focus:ring-emerald-500/10" : values.confirmPassword && values.password && values.confirmPassword !== values.password ? "border-red-300 focus:border-red-400 focus:ring-red-500/10" : ""}`}
                     value={values.confirmPassword}
@@ -486,6 +490,8 @@ export default function AuthPage({ mode = "login" }) {
             <div className="flex items-center gap-3">
               <label className="flex cursor-pointer items-center gap-2 text-xs text-zinc-600 dark:text-zinc-400">
                 <input
+                  id="rememberMe"
+                  name="remember"
                   type="checkbox"
                   checked={values.remember}
                   onChange={(event) => updateValue("remember", event.target.checked)}

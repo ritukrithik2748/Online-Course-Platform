@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { GraduationCap } from "lucide-react";
 
 const SOCIAL_LINKS = [
   {
@@ -63,9 +62,13 @@ export default function Footer() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
             <Link to="/" className="inline-flex items-center gap-2.5">
-              <span className="ig-gradient flex size-9 items-center justify-center rounded-xl shadow-glow">
-                <GraduationCap className="size-5 text-white" />
-              </span>
+              <img
+                src="/logo.png"
+                alt=""
+                width={36}
+                height={36}
+                className="size-9 shrink-0"
+              />
               <span className="text-lg font-extrabold tracking-tight text-white">
                 Lear<span className="gradient-text">Nova</span>
               </span>

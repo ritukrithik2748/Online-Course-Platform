@@ -560,6 +560,8 @@ export default function CourseDetail() {
                 </div>
 
                 <textarea
+                  id="reviewComment"
+                  name="reviewComment"
                   value={comment}
                   onChange={(event) => setComment(event.target.value)}
                   rows={4}

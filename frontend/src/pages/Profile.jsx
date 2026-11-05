@@ -212,6 +212,7 @@ export default function Profile() {
                 <Field label="First name" htmlFor="firstName" error={profileErrors.firstName}>
                   <input
                     id="firstName"
+                    name="firstName"
                     className={`input ${profileErrors.firstName ? "input-error" : ""}`}
                     value={form.firstName}
                     onChange={(event) => updateField("firstName", event.target.value)}
@@ -221,6 +222,7 @@ export default function Profile() {
                 <Field label="Last name" htmlFor="lastName" error={profileErrors.lastName}>
                   <input
                     id="lastName"
+                    name="lastName"
                     className={`input ${profileErrors.lastName ? "input-error" : ""}`}
                     value={form.lastName}
                     onChange={(event) => updateField("lastName", event.target.value)}
@@ -233,6 +235,7 @@ export default function Profile() {
                 <Field label="Country" htmlFor="country" error={profileErrors.country}>
                   <input
                     id="country"
+                    name="country"
                     className={`input ${profileErrors.country ? "input-error" : ""}`}
                     value={form.country}
                     onChange={(event) => updateField("country", event.target.value)}
@@ -250,6 +253,8 @@ export default function Profile() {
                     </span>
                     <div className="flex flex-col gap-1">
                       <input
+                        id="profilePhotoInput"
+                        name="profilePhoto"
                         ref={fileInputRef}
                         type="file"
                         accept="image/*"
@@ -277,6 +282,9 @@ export default function Profile() {
                       <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
                         JPG, PNG, GIF or WebP · Max 5MB
                       </p>
+                      {profileErrors.profilePicture && (
+                        <p className="field-error">{profileErrors.profilePicture}</p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -294,6 +302,7 @@ export default function Profile() {
                   <Field label="Bio" htmlFor="bio" error={profileErrors.bio}>
                     <textarea
                       id="bio"
+                      name="bio"
                       rows={4}
                       className={`input resize-y ${profileErrors.bio ? "input-error" : ""}`}
                       value={form.bio}
@@ -309,6 +318,7 @@ export default function Profile() {
                     >
                       <input
                         id="yearsOfExperience"
+                        name="yearsOfExperience"
                         type="number"
                         min="0"
                         max="60"
@@ -364,6 +374,7 @@ export default function Profile() {
                     <LockKeyhole className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-zinc-400" />
                     <input
                       id="currentPassword"
+                      name="currentPassword"
                       type={showPasswords ? "text" : "password"}
                       className={`input pl-11 ${passwordErrors.currentPassword ? "input-error" : ""}`}
                       value={passwords.currentPassword}
@@ -382,6 +393,7 @@ export default function Profile() {
                   >
                     <input
                       id="newPassword"
+                      name="newPassword"
                       type={showPasswords ? "text" : "password"}
                       className={`input ${passwordErrors.newPassword ? "input-error" : ""}`}
                       value={passwords.newPassword}
@@ -396,6 +408,7 @@ export default function Profile() {
                   >
                     <input
                       id="confirmPassword"
+                      name="confirmPassword"
                       type={showPasswords ? "text" : "password"}
                       className={`input ${passwordErrors.confirmPassword ? "input-error" : ""}`}
                       value={passwords.confirmPassword}
@@ -409,6 +422,8 @@ export default function Profile() {
 
                 <label className="flex w-fit cursor-pointer items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
                   <input
+                    id="showPasswords"
+                    name="showPasswords"
                     type="checkbox"
                     checked={showPasswords}
                     onChange={(event) => setShowPasswords(event.target.checked)}

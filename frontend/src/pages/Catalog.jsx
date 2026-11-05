@@ -121,6 +121,8 @@ export default function Catalog() {
           <div className="relative flex-1">
             <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-zinc-400" />
             <input
+              id="catalogSearch"
+              name="search"
               type="search"
               value={searchInput}
               onChange={(event) => setSearchInput(event.target.value)}
@@ -279,22 +281,21 @@ export default function Catalog() {
                 )}
               </div>
 
-              <label className="inline-flex items-center gap-2 text-xs font-semibold text-zinc-500 dark:text-zinc-400">
-                <ArrowDownWideNarrow className="size-4" />
-                <span className="sr-only sm:not-sr-only">Sort by</span>
-                <select
+              <div className="flex items-center gap-2 text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+                <ArrowDownWideNarrow className="size-4 shrink-0" />
+                <label htmlFor="catalogSort" className="shrink-0">
+                  <span className="sr-only sm:not-sr-only">Sort by</span>
+                </label>
+                <Select
+                  id="catalogSort"
+                  name="sort"
                   value={sort}
-                  onChange={(event) => updateParams({ sort: event.target.value })}
-                  className="input !w-auto !rounded-full !py-2 !pl-3 !pr-7 text-xs font-semibold"
-                  aria-label="Sort courses"
-                >
-                  {SORT_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
+                  onChange={(value) => updateParams({ sort: value })}
+                  options={SORT_OPTIONS}
+                  ariaLabel="Sort courses"
+                  className="w-44 sm:w-48"
+                />
+              </div>
             </div>
 
             {activeFilterCount > 0 && (

@@ -395,6 +395,7 @@ export default function InstructorDashboard() {
           <Field label="Course title" htmlFor="courseTitle" error={errors.title}>
             <input
               id="courseTitle"
+              name="courseTitle"
               className={`input ${errors.title ? "input-error" : ""}`}
               value={form.title}
               onChange={(event) => updateField("title", event.target.value)}
@@ -406,6 +407,7 @@ export default function InstructorDashboard() {
             <Field label="Category" htmlFor="courseCategory" error={errors.categoryId}>
               <select
                 id="courseCategory"
+                name="courseCategory"
                 className={`input ${errors.categoryId ? "input-error" : ""}`}
                 value={form.categoryId}
                 onChange={(event) => updateField("categoryId", event.target.value)}
@@ -421,6 +423,7 @@ export default function InstructorDashboard() {
             <Field label="Level" htmlFor="courseLevel">
               <select
                 id="courseLevel"
+                name="courseLevel"
                 className="input"
                 value={form.level}
                 onChange={(event) => updateField("level", event.target.value)}
@@ -438,6 +441,7 @@ export default function InstructorDashboard() {
             <Field label="Price (USD)" htmlFor="coursePrice" error={errors.price} hint="Use 0 for free.">
               <input
                 id="coursePrice"
+                name="coursePrice"
                 type="number"
                 min="0"
                 step="1"
@@ -449,6 +453,7 @@ export default function InstructorDashboard() {
             <Field label="Status" htmlFor="courseStatus">
               <select
                 id="courseStatus"
+                name="courseStatus"
                 className="input"
                 value={form.status}
                 onChange={(event) => updateField("status", event.target.value)}
@@ -462,6 +467,7 @@ export default function InstructorDashboard() {
           <Field label="Thumbnail URL" htmlFor="courseThumbnail" error={errors.thumbnailUrl} hint="Optional. Leave empty for a gradient cover.">
             <input
               id="courseThumbnail"
+              name="courseThumbnail"
               className={`input ${errors.thumbnailUrl ? "input-error" : ""}`}
               value={form.thumbnailUrl}
               onChange={(event) => updateField("thumbnailUrl", event.target.value)}
@@ -472,6 +478,7 @@ export default function InstructorDashboard() {
           <Field label="Description" htmlFor="courseDescription">
             <textarea
               id="courseDescription"
+              name="courseDescription"
               rows={5}
               className="input resize-y"
               value={form.description}

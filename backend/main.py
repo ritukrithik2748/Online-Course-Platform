@@ -214,12 +214,15 @@ def get_current_user(cred: HTTPAuthorizationCredentials = Depends(bearer)) -> di
 
 
 def optional_user(cred: Optional[HTTPAuthorizationCredentials] = Depends(bearer_optional)):
+    """Anonymous access when no token is sent.
+
+    A token that *is* sent but is expired/invalid must raise 401 instead of
+    silently downgrading to anonymous: the client clears the dead session
+    and asks the user to sign in again, rather than showing locked content.
+    """
     if not cred:
         return None
-    try:
-        return get_current_user(cred)
-    except HTTPException:
-        return None
+    return get_current_user(cred)
 
 
 def get_instructor(user: dict = Depends(get_current_user)) -> dict:

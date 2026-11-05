@@ -1,7 +1,94 @@
-INFO:     Started server process [4384]
+INFO:     Started server process [19076]
 INFO:     Waiting for application startup.
-2026-10-24 08:07:10,423 INFO Gateway forwarding to http://127.0.0.1:8001
+2026-11-05 20:39:26,688 INFO Gateway forwarding to http://127.0.0.1:8001
 INFO:     Application startup complete.
-ERROR:    [Errno 10048] error while attempting to bind on address ('127.0.0.1', 8000): [winerror 10048] only one usage of each socket address (protocol/network address/port) is normally permitted
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+2026-11-05 20:39:32,803 INFO HTTP Request: GET http://127.0.0.1:8001/api/health "HTTP/1.1 200 OK"
+2026-11-05 20:39:32,811 INFO GET /api/health -> 200 in 219ms rid=7220794b7ab94de99435d001c6d08915
+INFO:     127.0.0.1:12788 - "GET /api/health HTTP/1.1" 200 OK
+2026-11-05 20:40:40,567 INFO HTTP Request: GET http://127.0.0.1:8001/api/health "HTTP/1.1 200 OK"
+2026-11-05 20:40:40,571 INFO GET /api/health -> 200 in 187ms rid=89901b0f11494ce98bcb5e0b67d093a7
+INFO:     127.0.0.1:52442 - "GET /api/health HTTP/1.1" 200 OK
+2026-11-05 20:41:07,714 INFO HTTP Request: GET http://127.0.0.1:8001/api/categories "HTTP/1.1 200 OK"
+2026-11-05 20:41:07,719 INFO GET /api/categories -> 200 in 298ms rid=a290674068e9460a8efe02b308fd0da0
+INFO:     127.0.0.1:65433 - "GET /api/categories HTTP/1.1" 200 OK
+2026-11-05 20:41:07,931 INFO HTTP Request: GET http://127.0.0.1:8001/api/categories "HTTP/1.1 200 OK"
+2026-11-05 20:41:07,938 INFO GET /api/categories -> 200 in 201ms rid=ff9b6504d971411ab303bb428438fd42
+2026-11-05 20:41:07,969 INFO HTTP Request: GET http://127.0.0.1:8001/api/courses?sort=newest&page=1&page_size=9 "HTTP/1.1 200 OK"
+2026-11-05 20:41:07,976 INFO GET /api/courses -> 200 in 551ms rid=b9ead4f91cae48b1b93302bef116dc6d
+INFO:     127.0.0.1:65434 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+2026-11-05 20:41:08,030 INFO HTTP Request: GET http://127.0.0.1:8001/api/categories "HTTP/1.1 200 OK"
+2026-11-05 20:41:08,035 INFO GET /api/categories -> 200 in 237ms rid=5accdfba47024fb18a24dcee597e706c
+INFO:     127.0.0.1:65438 - "GET /api/categories HTTP/1.1" 200 OK
+2026-11-05 20:41:08,486 INFO HTTP Request: GET http://127.0.0.1:8001/api/courses?sort=newest&page=1&page_size=9 "HTTP/1.1 200 OK"
+2026-11-05 20:41:08,493 INFO GET /api/courses -> 200 in 510ms rid=bbd2a8c4986e4630a0a37ad2cefa0a16
+INFO:     127.0.0.1:65434 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+2026-11-05 20:46:49,400 INFO HTTP Request: GET http://127.0.0.1:8001/api/categories "HTTP/1.1 200 OK"
+2026-11-05 20:46:49,406 INFO GET /api/categories -> 200 in 256ms rid=4755e782e7934b129c3a0e053e9bf3a5
+INFO:     127.0.0.1:33942 - "GET /api/categories HTTP/1.1" 200 OK
+2026-11-05 20:46:49,728 INFO HTTP Request: GET http://127.0.0.1:8001/api/courses?sort=newest&page=1&page_size=9 "HTTP/1.1 200 OK"
+2026-11-05 20:46:49,735 INFO GET /api/courses -> 200 in 567ms rid=000d3cd25b71444ca1b597dc42805ba9
+INFO:     127.0.0.1:33945 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+2026-11-05 20:49:48,575 INFO HTTP Request: GET http://127.0.0.1:8001/api/categories "HTTP/1.1 200 OK"
+2026-11-05 20:49:48,584 INFO GET /api/categories -> 200 in 380ms rid=e834ffee8f28482c890826585b7f471e
+INFO:     127.0.0.1:61481 - "GET /api/categories HTTP/1.1" 200 OK
+2026-11-05 20:49:48,832 INFO HTTP Request: GET http://127.0.0.1:8001/api/categories "HTTP/1.1 200 OK"
+2026-11-05 20:49:48,840 INFO GET /api/categories -> 200 in 245ms rid=73f06ecc5bf94072a4399b8a32fb6884
+INFO:     127.0.0.1:61481 - "GET /api/categories HTTP/1.1" 200 OK
+2026-11-05 20:49:48,873 INFO HTTP Request: GET http://127.0.0.1:8001/api/courses?sort=newest&page=1&page_size=9 "HTTP/1.1 200 OK"
+2026-11-05 20:49:48,881 INFO GET /api/courses -> 200 in 665ms rid=515b2327cad246b1afff1f22157d8a24
+INFO:     127.0.0.1:61482 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+2026-11-05 20:49:49,322 INFO HTTP Request: GET http://127.0.0.1:8001/api/courses?sort=newest&page=1&page_size=9 "HTTP/1.1 200 OK"
+2026-11-05 20:49:49,324 INFO GET /api/courses -> 200 in 437ms rid=bf8c98ca979841b5a146cdac5a3f62ba
+INFO:     127.0.0.1:61482 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+2026-11-05 21:54:03,840 INFO HTTP Request: GET http://127.0.0.1:8001/api/categories "HTTP/1.1 200 OK"
+2026-11-05 21:54:03,845 INFO GET /api/categories -> 200 in 246ms rid=0dd079f9528d4cceb40e43d9804213b0
+2026-11-05 21:54:04,001 INFO HTTP Request: GET http://127.0.0.1:8001/api/courses?sort=newest&page=1&page_size=9 "HTTP/1.1 200 OK"
+2026-11-05 21:54:04,004 INFO GET /api/courses -> 200 in 399ms rid=1b478b1d42fa43f59ea2e87ccb7590d7
+2026-11-05 21:54:04,083 INFO HTTP Request: GET http://127.0.0.1:8001/api/categories "HTTP/1.1 200 OK"
+2026-11-05 21:54:04,086 INFO GET /api/categories -> 200 in 139ms rid=c34133bc93b34571a0ca193e406ed72f
+INFO:     127.0.0.1:16835 - "GET /api/categories HTTP/1.1" 200 OK
+2026-11-05 21:54:04,327 INFO HTTP Request: GET http://127.0.0.1:8001/api/courses?sort=newest&page=1&page_size=9 "HTTP/1.1 200 OK"
+2026-11-05 21:54:04,330 INFO GET /api/courses -> 200 in 380ms rid=0fd9c87db87241d3a644e4256585276a
+INFO:     127.0.0.1:16836 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+2026-11-05 22:02:54,196 INFO HTTP Request: GET http://127.0.0.1:8001/api/categories "HTTP/1.1 200 OK"
+2026-11-05 22:02:54,201 INFO GET /api/categories -> 200 in 206ms rid=5dca9fc27a264ad99d23436875a8ec25
+INFO:     127.0.0.1:28404 - "GET /api/categories HTTP/1.1" 200 OK
+2026-11-05 22:02:54,319 INFO HTTP Request: GET http://127.0.0.1:8001/api/categories "HTTP/1.1 200 OK"
+2026-11-05 22:02:54,322 INFO GET /api/categories -> 200 in 118ms rid=2fd310d4b92a4af4a0b07b8513136da9
+INFO:     127.0.0.1:28404 - "GET /api/categories HTTP/1.1" 200 OK
+2026-11-05 22:02:54,329 INFO HTTP Request: GET http://127.0.0.1:8001/api/courses?sort=newest&page=1&page_size=9 "HTTP/1.1 200 OK"
+2026-11-05 22:02:54,333 INFO GET /api/courses -> 200 in 335ms rid=cf3ccba92b5f4b1f86678382a8a78dc5
+INFO:     127.0.0.1:28403 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+2026-11-05 22:02:54,626 INFO HTTP Request: GET http://127.0.0.1:8001/api/courses?sort=newest&page=1&page_size=9 "HTTP/1.1 200 OK"
+2026-11-05 22:02:54,630 INFO GET /api/courses -> 200 in 293ms rid=4c0c173289614dcabe02374d2b522014
+INFO:     127.0.0.1:28403 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+2026-11-05 22:13:47,873 INFO HTTP Request: GET http://127.0.0.1:8001/api/categories "HTTP/1.1 200 OK"
+2026-11-05 22:13:47,876 INFO GET /api/categories -> 200 in 118ms rid=8636c81c3a20441faf347974746ce8c6
+INFO:     127.0.0.1:64688 - "GET /api/categories HTTP/1.1" 200 OK
+2026-11-05 22:13:47,958 INFO HTTP Request: GET http://127.0.0.1:8001/api/categories "HTTP/1.1 200 OK"
+2026-11-05 22:13:47,961 INFO GET /api/categories -> 200 in 79ms rid=912c0910115a49c4b2ae55f8ee1999f9
+INFO:     127.0.0.1:64688 - "GET /api/categories HTTP/1.1" 200 OK
+2026-11-05 22:13:47,964 INFO HTTP Request: GET http://127.0.0.1:8001/api/courses?sort=newest&page=1&page_size=9 "HTTP/1.1 200 OK"
+2026-11-05 22:13:47,967 INFO GET /api/courses -> 200 in 206ms rid=8cb65e0d478b4d7b94d3ba19a9a5537f
+INFO:     127.0.0.1:64689 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+2026-11-05 22:13:48,121 INFO HTTP Request: GET http://127.0.0.1:8001/api/courses?sort=newest&page=1&page_size=9 "HTTP/1.1 200 OK"
+2026-11-05 22:13:48,124 INFO GET /api/courses -> 200 in 152ms rid=6cb3a2e73fbf4824a006a63f568ea751
+INFO:     127.0.0.1:64688 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45128 - "OPTIONS /api/courses?sort=popular&page_size=6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32103 - "OPTIONS /api/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:10069 - "OPTIONS /api/me HTTP/1.1" 200 OK
+2026-11-05 22:14:19,916 INFO HTTP Request: GET http://127.0.0.1:8001/api/categories "HTTP/1.1 200 OK"
+2026-11-05 22:14:19,921 INFO GET /api/categories -> 200 in 279ms rid=0a28b0ded12440ac93e734c145f80498
+2026-11-05 22:14:19,934 INFO HTTP Request: GET http://127.0.0.1:8001/api/me "HTTP/1.1 401 Unauthorized"
+2026-11-05 22:14:19,939 INFO GET /api/me -> 401 in 283ms rid=e91bfaea5ee44820aa70989ff7139da7
+INFO:     127.0.0.1:45128 - "GET /api/me HTTP/1.1" 401 Unauthorized
+2026-11-05 22:14:19,952 INFO HTTP Request: GET http://127.0.0.1:8001/api/categories "HTTP/1.1 200 OK"
+2026-11-05 22:14:19,965 INFO GET /api/categories -> 200 in 260ms rid=c085ba7bcbcb4087ad1c42eef244885c
+2026-11-05 22:14:20,062 INFO HTTP Request: GET http://127.0.0.1:8001/api/me "HTTP/1.1 401 Unauthorized"
+2026-11-05 22:14:20,067 INFO GET /api/me -> 401 in 125ms rid=d5a2dfc3059f40358dcb5a2b852aebd4
+INFO:     127.0.0.1:45128 - "GET /api/me HTTP/1.1" 401 Unauthorized
+2026-11-05 22:14:20,107 INFO HTTP Request: GET http://127.0.0.1:8001/api/courses?sort=popular&page_size=6 "HTTP/1.1 200 OK"
+2026-11-05 22:14:20,112 INFO GET /api/courses -> 200 in 479ms rid=67659b655f5b4b89b282358b51c94b9b
+2026-11-05 22:14:20,126 INFO HTTP Request: GET http://127.0.0.1:8001/api/courses?sort=popular&page_size=6 "HTTP/1.1 200 OK"
+2026-11-05 22:14:20,133 INFO GET /api/courses -> 200 in 443ms rid=83a40e86f61d4537a81a14f09113d153

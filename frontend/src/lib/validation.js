@@ -39,7 +39,12 @@ export function validateProfile(values) {
   if (values.profilePicture && values.profilePicture.length > 500) {
     errors.profilePicture = "URL is too long.";
   }
-  if (values.profilePicture && !/^https?:\/\//i.test(values.profilePicture)) {
+  // Uploaded photos come back from the API as root-relative paths (/uploads/profile/...).
+  if (
+    values.profilePicture &&
+    !/^https?:\/\//i.test(values.profilePicture) &&
+    !/^\/uploads\/[\w./-]+$/i.test(values.profilePicture)
+  ) {
     errors.profilePicture = "Use a full http(s) image URL.";
   }
   if (values.bio && values.bio.length > 2000) errors.bio = "Bio must be under 2000 characters.";

@@ -1,5 +1,13 @@
 import { useState } from "react";
+import { api } from "../../services/api";
 import { initials } from "../../lib/format";
+
+// Uploaded avatars are stored as root-relative paths (/uploads/profile/...).
+// They must be loaded from the API origin, not from the frontend origin.
+function resolveSrc(src) {
+  if (!src) return src;
+  return src.startsWith("/") ? `${api.baseUrl}${src}` : src;
+}
 
 const PALETTES = [
   ["#fa7e1e", "#d62976"],
@@ -26,7 +34,8 @@ function paletteFor(name = "") {
 export default function Avatar({ name = "", src, size = "md", ring = false, className = "" }) {
   const [failed, setFailed] = useState(false);
   const [from, to] = paletteFor(name);
-  const showImage = src && !failed;
+  const imageSrc = resolveSrc(src);
+  const showImage = imageSrc && !failed;
 
   return (
     <span
@@ -38,7 +47,7 @@ export default function Avatar({ name = "", src, size = "md", ring = false, clas
     >
       {showImage ? (
         <img
-          src={src}
+          src={imageSrc}
           alt={name}
           className="h-full w-full object-cover"
           onError={() => setFailed(true)}

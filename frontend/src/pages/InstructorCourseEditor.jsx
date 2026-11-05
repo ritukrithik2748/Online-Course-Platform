@@ -405,6 +405,7 @@ export default function InstructorCourseEditor() {
             <Field label="Title" htmlFor="editTitle" error={errors.title}>
               <input
                 id="editTitle"
+                name="editTitle"
                 className={`input ${errors.title ? "input-error" : ""}`}
                 value={form.title}
                 onChange={(event) => updateField("title", event.target.value)}
@@ -415,6 +416,7 @@ export default function InstructorCourseEditor() {
               <Field label="Category" htmlFor="editCategory" error={errors.categoryId}>
                 <select
                   id="editCategory"
+                  name="editCategory"
                   className={`input ${errors.categoryId ? "input-error" : ""}`}
                   value={form.categoryId}
                   onChange={(event) => updateField("categoryId", event.target.value)}
@@ -430,6 +432,7 @@ export default function InstructorCourseEditor() {
               <Field label="Level" htmlFor="editLevel">
                 <select
                   id="editLevel"
+                  name="editLevel"
                   className="input"
                   value={form.level}
                   onChange={(event) => updateField("level", event.target.value)}
@@ -447,6 +450,7 @@ export default function InstructorCourseEditor() {
               <Field label="Price (USD)" htmlFor="editPrice" error={errors.price}>
                 <input
                   id="editPrice"
+                  name="editPrice"
                   type="number"
                   min="0"
                   step="1"
@@ -458,6 +462,7 @@ export default function InstructorCourseEditor() {
               <Field label="Status" htmlFor="editStatus">
                 <select
                   id="editStatus"
+                  name="editStatus"
                   className="input"
                   value={form.status}
                   onChange={(event) => updateField("status", event.target.value)}
@@ -477,6 +482,7 @@ export default function InstructorCourseEditor() {
             >
               <input
                 id="editThumbnail"
+                name="editThumbnail"
                 className={`input ${errors.thumbnailUrl ? "input-error" : ""}`}
                 value={form.thumbnailUrl}
                 onChange={(event) => updateField("thumbnailUrl", event.target.value)}
@@ -487,6 +493,7 @@ export default function InstructorCourseEditor() {
             <Field label="Description" htmlFor="editDescription">
               <textarea
                 id="editDescription"
+                name="editDescription"
                 rows={6}
                 className="input resize-y"
                 value={form.description}
@@ -663,6 +670,7 @@ export default function InstructorCourseEditor() {
           <Field label="Section title" htmlFor="sectionTitle">
             <input
               id="sectionTitle"
+              name="sectionTitle"
               className="input"
               value={sectionForm.title}
               onChange={(event) =>
@@ -675,6 +683,7 @@ export default function InstructorCourseEditor() {
           <Field label="Order" htmlFor="sectionOrder" hint="Lower numbers appear first.">
             <input
               id="sectionOrder"
+              name="sectionOrder"
               type="number"
               min="1"
               className="input"
@@ -727,6 +736,7 @@ export default function InstructorCourseEditor() {
           <Field label="Lesson title" htmlFor="lessonTitle">
             <input
               id="lessonTitle"
+              name="lessonTitle"
               className="input"
               value={lessonForm.title}
               onChange={(event) =>
@@ -741,6 +751,7 @@ export default function InstructorCourseEditor() {
             <Field label="Content type" htmlFor="lessonType">
               <select
                 id="lessonType"
+                name="lessonType"
                 className="input"
                 value={lessonForm.contentType}
                 onChange={(event) =>
@@ -755,6 +766,7 @@ export default function InstructorCourseEditor() {
             <Field label="Duration (min)" htmlFor="lessonDuration">
               <input
                 id="lessonDuration"
+                name="lessonDuration"
                 type="number"
                 min="0"
                 className="input"
@@ -767,6 +779,7 @@ export default function InstructorCourseEditor() {
             <Field label="Order" htmlFor="lessonOrder">
               <input
                 id="lessonOrder"
+                name="lessonOrder"
                 type="number"
                 min="1"
                 className="input"
@@ -785,6 +798,7 @@ export default function InstructorCourseEditor() {
           >
             <input
               id="lessonUrl"
+              name="lessonUrl"
               className="input"
               value={lessonForm.contentUrl}
               onChange={(event) =>
@@ -796,6 +810,8 @@ export default function InstructorCourseEditor() {
 
           <label className="flex cursor-pointer items-start gap-2.5 rounded-2xl bg-zinc-50 p-3 text-xs dark:bg-white/5">
             <input
+              id="lessonIsPreview"
+              name="isPreview"
               type="checkbox"
               checked={lessonForm.isPreview}
               onChange={(event) =>
