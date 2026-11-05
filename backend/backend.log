@@ -35,3 +35,10 @@ INFO:     127.0.0.1:24821 - "GET /api/categories HTTP/1.1" 200 OK
 INFO:     127.0.0.1:24817 - "GET /api/me HTTP/1.1" 401 Unauthorized
 INFO:     127.0.0.1:24818 - "GET /api/courses?sort=popular&page_size=6 HTTP/1.1" 200 OK
 INFO:     127.0.0.1:24820 - "GET /api/courses?sort=popular&page_size=6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45916 - "GET /api/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32178 - "GET /api/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45917 - "GET /api/courses?sort=popular&page_size=6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32177 - "GET /api/courses?sort=popular&page_size=6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45917 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45916 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45917 - "GET /api/courses?sort=rating&page=1&page_size=9 HTTP/1.1" 200 OK

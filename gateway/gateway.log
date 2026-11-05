@@ -92,3 +92,21 @@ INFO:     127.0.0.1:45128 - "GET /api/me HTTP/1.1" 401 Unauthorized
 2026-11-05 22:14:20,112 INFO GET /api/courses -> 200 in 479ms rid=67659b655f5b4b89b282358b51c94b9b
 2026-11-05 22:14:20,126 INFO HTTP Request: GET http://127.0.0.1:8001/api/courses?sort=popular&page_size=6 "HTTP/1.1 200 OK"
 2026-11-05 22:14:20,133 INFO GET /api/courses -> 200 in 443ms rid=83a40e86f61d4537a81a14f09113d153
+2026-11-05 22:45:10,478 INFO HTTP Request: GET http://127.0.0.1:8001/api/categories "HTTP/1.1 200 OK"
+2026-11-05 22:45:10,482 INFO GET /api/categories -> 200 in 288ms rid=8958534792f643bf942da530560267c9
+2026-11-05 22:45:10,510 INFO HTTP Request: GET http://127.0.0.1:8001/api/categories "HTTP/1.1 200 OK"
+2026-11-05 22:45:10,512 INFO GET /api/categories -> 200 in 279ms rid=5b49e3a723d94455a3dd0a2697e702d1
+INFO:     127.0.0.1:32176 - "GET /api/categories HTTP/1.1" 200 OK
+2026-11-05 22:45:10,534 INFO HTTP Request: GET http://127.0.0.1:8001/api/courses?sort=popular&page_size=6 "HTTP/1.1 200 OK"
+2026-11-05 22:45:10,536 INFO GET /api/courses -> 200 in 346ms rid=357faf399eb84886b6a939c4fc98a5da
+2026-11-05 22:45:10,553 INFO HTTP Request: GET http://127.0.0.1:8001/api/courses?sort=popular&page_size=6 "HTTP/1.1 200 OK"
+2026-11-05 22:45:10,555 INFO GET /api/courses -> 200 in 326ms rid=e3d143e4b4d84097b9fb7ca87fa0e3dc
+INFO:     127.0.0.1:18448 - "GET /api/courses?sort=popular&page_size=6 HTTP/1.1" 200 OK
+2026-11-05 22:45:13,960 INFO HTTP Request: GET http://127.0.0.1:8001/api/courses?sort=newest&page=1&page_size=9 "HTTP/1.1 200 OK"
+2026-11-05 22:45:13,962 INFO GET /api/courses -> 200 in 304ms rid=f3b711e3cc4b4c8e8f8cbad44ddf48df
+2026-11-05 22:45:13,963 INFO HTTP Request: GET http://127.0.0.1:8001/api/courses?sort=newest&page=1&page_size=9 "HTTP/1.1 200 OK"
+2026-11-05 22:45:13,966 INFO GET /api/courses -> 200 in 298ms rid=7f68f4106f584e44b878d7e36e3dd14a
+INFO:     127.0.0.1:32176 - "GET /api/courses?sort=newest&page=1&page_size=9 HTTP/1.1" 200 OK
+2026-11-05 22:45:15,584 INFO HTTP Request: GET http://127.0.0.1:8001/api/courses?sort=rating&page=1&page_size=9 "HTTP/1.1 200 OK"
+2026-11-05 22:45:15,586 INFO GET /api/courses -> 200 in 265ms rid=cfbb9973abab44929f58f1fb74ec3fe6
+INFO:     127.0.0.1:32176 - "GET /api/courses?sort=rating&page=1&page_size=9 HTTP/1.1" 200 OK
