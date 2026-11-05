@@ -1,6 +1,6 @@
 # LearNova — Online Learning Platform
 
-A Udemy/Coursera-style course platform: FastAPI backend, an API gateway in front of it, and a React frontend styled with an Instagram-inspired look. Features include Google Sign-In, profile photo uploads, course filtering, enrollment tracking, and an expanded course catalog.
+A course platform: FastAPI backend, an API gateway in front of it, and a React frontend styled with an Instagram-inspired look. Features include Google Sign-In, profile photo uploads, course filtering, enrollment tracking, and an expanded course catalog.
 
 ```
 frontend (Vite + React)  →  gateway (FastAPI :8000)  →  backend API (FastAPI :8001)  →  PostgreSQL :5433
